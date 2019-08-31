@@ -15,52 +15,53 @@ The game format is
     2. letter in name - underscores replaced with letter
     3. letter already used - list of previsouly used letters shown
     4. letter in name and solved the word - message followed by next word
-    5. repeat above until pool of presidential names exhausted.
+    5. repeat above until pool of presidential names exhausted.  (if time permits allow replay of the whole set of names)
 
 ## User Stories / Use Cases
 
 1.  user starts bash session
 
-#/// **** CONTINUE HERE - 8-30-2019 ****  ///
+2.  user begins with node word-guess-node.js - programs begins in terminal
+    1. displays 'Welcome to Word Guess - US Presidential Edition'
+    2. displays 'Solve each of the 44 president name puzzles, use keyboard A through Z'
+    3. displays 'You lose the puzzle if you accumlate 6 miss quesses, lets begin'
+    4. displays the 'word is:   - - - - -    -    - - - -'  (for GEORGE W BUSH)
+    5. displays the word in format of with underscores
+        1. for readibilty:  2 spaces between each letter and 4 spaces between each name or initial
+    6. 'Type letter a though z'
 
-2.  user enters spotify-this-song song-name
-    1. spotify API returns information about song-name  
-        1. artist(s)
-        2. song name
-        3. preview link of song
-        4. album song is from
-    2. if no song-name entered default to "My way"
+3.  user types non A through Z key
+    1. display - "you typed '<key>' 'a' through 'z' only please"
+    2. user can type again
+  
+4.  user types letter already used
+    1. display - "you already used '<key>'"
+    2. user can type again
 
-3.  user enters movie-this movie-name
-    1. OMDB API returns information about movie-name
-        1. title of movie
-        2. release year
-        3. IMDB rating
-        4. Rotten tomatoes rating
-        5. country of origin
-        6. language
-        7. plot
-        8. actors
-    2. if no movie-name entered the default movie-name to 'Mr. Nobody'
+5.  user types new letter that is not in puzzle and guesses remain
+    1.  display 'Letter <key> is a miss, n guesses remaining'
+    2.  user can type again
 
-4.  user enters concert-this artist/band-name
-    1. Bands in Town API returns information about upcoming concerts for the artist
-        1. name of venue
-        2. venue location
-        3. data of event formatted as MM/DD/YYYY (use moment library)
+6.  user types new letter that is not in puzzle no remaining guesses
+    1.  display 'Letter <key> is a miss, no remainig guesses'
+    2.  display 'Solution is: G E O R G E    W    B U S H'
+    3.  display 'Next Word'
+    4.  displays the 'word is:   _ _ _ _    _ _ _ _ _ _ _'  (for B I L L    C L I N T O N)
 
-4.  user enters do-what-says
-    1. the random.txt file is read and its command is executed 
-        1. value in random.txt can be for any of the three commands
+7.  user types new letter that is in the puzzle but doesn't solve puzzle yet
+    1.  display 'Letter <key> is a hit.
+    2.  display 'word is:  G _ _ _ G _    _    _ _ _ _"  (for G in George W Bush)
 
-5.  corrective command interpretation
-    1. if user mis-spells one of the 3 commands (spotify-this, movie-this
-    concert-this) liri will respond asking if user meant to type the correct name
-        1. example move-dis the martian would result in 
-        2. did you mean movie-this the martian Y/N?
-    2. if user answers Y then liri will execute the corrected command
-    3. if user answers N then lire will print list of valid commands and
-       terminate
+8.  user types new letter that solves puzzle
+    1.  display 'Solved, word is G E O R G E    W    B U S H'
+    2.  display 'Next Word'
+    4.  displays the 'word is:   _ _ _ _    _ _ _ _ _ _ _'  (for B I L L    C L I N T O N)
+
+9.  user losses or solves last puzzle
+    1. display 'Nice Game - you got X of 44 correct'
+    2. *** if coding time permits allow for prompt to Play Again)
+        1. this would re-randomize the word pool and start new game
+
       
 
 ### Psuedo Code - details TBD
@@ -72,37 +73,29 @@ The game format is
 2. Objects/Classes
     1. letter
         1. Properties
-            1. none
+            1. tbd
         2. Methods
-            1. getSong
+            1. tbd 
     2. word
         1. Properties
-            1. apiKey in constructor
+            1. tbd
         2. Methods
-            1. getMovie
+            1. tbd
     3. index
         1. Properties
-            1. apiKey in constructor
+            1. tbd
         2. Methods
-            1. getConcert
+            1. tbd
+    4. word pool
+        1. Properties
+            1. tbd
+        2. Methods
+            1. tbd
+
       
 
 3. Program Flow
-    1. determine command entered
-        1. if not exact match of command name but close and parameter follows then ask user if they meant the actual command 
-            1. if yes then execute command
-            2. if no then print help command list
-        2. if exact match but no parameter
-            1. use default parameter
-        3. if exact match of a command then execute the command
-            1. spotify-this-song
-            2. movie-this
-            3. concert-this
-            4. do-what-it-says
-                1. reads random.txt and execute appropriate command
-                    1. should do same close and missing parameter check as if
-                    entered on command line
-                2. if no random.txt tell users
-
-
+    1. To Be Determined (for now refer to use cases)
+       
          
+#/// **** CONTINUE HERE - 8-31-2019 ****  ///
