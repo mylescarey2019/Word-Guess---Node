@@ -73,10 +73,30 @@ The game format is
 2. Objects/Classes
     1. letter
         1. Properties
-            1. tbd
+            1. letter - a single character holding A thru Z
+            2. isGuessed  - boolean state of letter
         2. Methods
-            1. tbd 
+            1. getLetter - returns letter character or mask
+            2. setLetter - checks parameter character against letter and set isGuessed to
+            true if a match
     2. word
+        1. Properties
+            1. word - string containing the word
+            2. letters - array of letter objects for the word
+        2. Methods
+            1. init - constuctor function that builds letter array
+            2. updateWord - take user letter guess and calls setLetter for each letter array entry 
+            3. getWord - returns terminal ready word string - has masks and spacing for readibility
+    3. word pool
+        1. Properties
+            1. words - array of Word objects
+        2. Methods
+            1. init - used in constructor - takes array of word strings and intializes word array 
+               loads words randomly so each time game played order is different
+            2. isWordRemaining - boolean whether any words are available
+            3. getWord - pops word object off of the words array, returns it, deletes it 
+            4. showWords - diagnostic console log of the words
+    4. game
         1. Properties
             1. tbd
         2. Methods
@@ -86,11 +106,7 @@ The game format is
             1. tbd
         2. Methods
             1. tbd
-    4. word pool
-        1. Properties
-            1. tbd
-        2. Methods
-            1. tbd
+
 
       
 

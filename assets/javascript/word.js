@@ -3,7 +3,6 @@
 // letterClass - logic to manage letters
 var letterClass = require("./letter.js");
 
-
 // class for word in the puzzle
 // takes a string word and creates property array of letter objects
 class Word {
@@ -18,9 +17,20 @@ class Word {
 
   // initialize by creating array of letters for the word paramter
   init() {
-    console.log('in Word Class Object.init');
+    // console.log('in Word Class Object.init');
     // iterate over the string and instansiate new letter object - push into letters array
     [...this.word].forEach(char => this.letters.push(new letterClass.Letter(char))); 
+  }
+
+  // checks a valid A through Z letter (intend game class wrapper to call this after
+  // it has dealt with non alpha characters)
+  // this A through Z letter will be applied this.word by calling setLetter on each letter
+  updateWord(guessLetter) {
+  console.log('in Word Class Object.updateWord');
+  // iterate over the this.letters and call setLetter for each letter
+    for (let currentLetter of this.letters) {
+      currentLetter.setLetter(guessLetter);
+    }
   }
 
   // return formatted string ready for use on the terminal
@@ -28,7 +38,7 @@ class Word {
   // example: 'G  E  O  R  G  E    W    B  U  S  H'
   // example: '_  _  _  _  _  _    _    _  _  _  _'  
   getWord() {
-    console.log('in Word Class Object.getWord');
+    // console.log('in Word Class Object.getWord');
     // psuedo code
     // 1.  iterate over this.word
     // 2.  if space then push 4 spaces on to string
@@ -51,20 +61,8 @@ class Word {
       }  
     };
 
-    // for (var i = 0 ; i < wordLength; i++) {
-    //   displayableWord += this.letters[i].getLetter();
-    //   console.log(this.word[i] + ' ' + displayableWord);
-    //   // if not the last letter in word then add necessary whitespace
-    //   if (i < wordLength - 1) {
-    //     (this.word[i + 1] === ' ') ? displayableWord += '    ' : displayableWord += '  ';
-    //     console.log(this.word[i] + ' ' + displayableWord);
-    //   }
-    // };
-
     return displayableWord;
   };
-
-  
 
 
   // dump letters array
@@ -72,18 +70,6 @@ class Word {
     console.log('in Word Class Object.hello');
     console.log(this.letters);
   }
-  // // get letter - returns the letter in its current state of known or masked
-  // getLetter() {
-  //   console.log('in Word Class Object.getLetter');
-  //   return (this.isGuessed) ? this.wordLetter : '_';
-  // }
-
-  // // check and set letter's current state against parmeter and set state to known or masked
-  // setLetter(letter) {
-  //   console.log('in Word Class Object.setLetter');
-  //   (letter.toUpperCase() === this.wordLetter) ? this.isGuessed = true : this.isGuessed = false;
-  // }
-
 }
 
 // module.exports for use in other .js files
