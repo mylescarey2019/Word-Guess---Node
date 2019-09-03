@@ -66,19 +66,30 @@ class Word {
     return displayableWord;
   };
 
-   // is the word solved  
-   // ***REFACTOR - want more succint method
-   isSolved() {
-   for (const letter of this.letters) {
+
+  // solve the word and return displayable version
+  getSolvedDisplayableWord() {
+    // set all letters to known
+    for (const letter of this.letters) {
+      letter.isKnown = true;
+    };
+    return this.getDisplayableWord();
+  }
+
+
+  // is the word solved  
+  // ***REFACTOR - want more succint method if possible
+  isSolved() {
+  for (const letter of this.letters) {
       if(!letter.isKnown) return false;
     };
     return true;
-   }
+  }
 
 
-  // dump letters array
-  hello() {
-    console.log('in Word Class Object.hello');
+  // diagnostic display of word's letters array
+  showWordLetters() {
+    // console.log('in Word Class Object.hello');
     console.log(this.letters);
   }
 }

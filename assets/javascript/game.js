@@ -15,6 +15,7 @@ class Game {
     this.guesses = 6;
     this.state = '';
     this.currentWord = ''
+    this.savedDisplayableWord = '';
     this.wordsWon = 0;
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
@@ -26,11 +27,16 @@ class Game {
 
   //methods
 
-  // initialize by creating word pool object
+  // initialize by creating word pool object and getting first word
   init() {
     // console.log('in Game Class Object.init');
     this.wordPool = new wordPoolClass.WordPool(this.puzzelWordList);
     this.wordPool.showWords();
+    this.nextWord();
+    console.log('Welcome to Word Guess - US Presidential Edition');
+    console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
+    console.log('You lose the word if you accumlate 6 missed guesses, lets begin.');
+    console.log(`The first name is: ${this.savedDisplayableWord}`);
   }
   
   // set the current word to use in the puzzle
@@ -41,13 +47,14 @@ class Game {
     this.state = 'NEW WORD';
     this.lettersGuessed.splice(0,this.lettersGuessed.length);
     this.currentWord = this.wordPool.getWordFromPool();
+    // to be used to determine if new letter guess unvieled any new letters
+    this.savedDisplayableWord = this.currentWord.getDisplayableWord();
   }
 
   // core logic for handling letter guess and puzzle state 
-  // parameter is letter guess 
-  // return current game state 
+  // parameter is letter guess   &   return current game state 
   processGuess(letterGuess) {
-    console.log('in Game Class Object.processGuess');
+    // console.log('in Game Class Object.processGuess');
     //Not alpha 
     if (letterGuess.match(this.regex) === null) {
       console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
@@ -57,51 +64,53 @@ class Game {
     //Already used
     if (this.lettersGuessed.indexOf(letterGuess.toUpperCase()) !== -1) {
       console.log(`\'${letterGuess.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`);
-      this.state = 'USED';
+      this.state = 'USED LETTER';
       return;
     };
 
-    // Valid A-Z to be processed
-    // update the word object
+    // Valid A-Z to be processed - update the word object
     this.currentWord.updateWord(letterGuess);
     // update the used letter array
     this.lettersGuessed.push(letterGuess.toUpperCase());
 
     console.log(`\'${letterGuess.toUpperCase()}\' is new letter.  Letters used: ${this.lettersGuessed.join('')}`);
 
-    // see if this was a hit or miss 
-    // need new method in word to do this
-    // then do stuff based on hit / miss 
-    // then do stuff if solved or out of guesses
-
-    // check if puzzle is solved
-    if (this.game.currentWord.isSolved()) {
-      // solved
-      console.log(`You solved: ${game.currentWord.getDisplayableWord()}`);
-      game.wordsWon++;
-      console.log(`Your score is: Wins: ${game.wordsWon} Losses: ${game.wordsLost}`);
-      // will have to see if there are any more words, for now just return
-      this.state = 'SOLVED';
-      return;
+    // check for hit or miss : compare saved displayable word vs its new state
+    // if different than letter was a hit
+    var newDisplayableWord = this.currentWord.getDisplayableWord();
+    if (this.savedDisplayableWord !== newDisplayableWord) {
+      this.savedDisplayableWord = newDisplayableWord;
+      console.log(`\'${letterGuess.toUpperCase()}\' is a Hit.  Word is: ${newDisplayableWord}   Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`);
     }
     else {
-      // not solved - 
-      
+      this.guesses--;
+      console.log(`\'${letterGuess.toUpperCase()}\' is a Miss.  Guesses remaining: ${this.guesses}`);
+    };
+
+    // now we know if it was hit or miss - next determine if it solved the word or exhausted the guesses
+
+    // check if puzzle is solved
+    if (this.currentWord.isSolved()) {
+      this.wordsWon++;
+      console.log(`You solved it. Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
+      // will have to see if there are any more words, for now just return
+      this.state = 'SOLVED';
     }
-    this.guesses--;
-    this.state = 'A-Z';
-    return;
-
-
-    //was this guess already done?
-    //is this guess a hit
-    //   has it solved the puzzle
-    //is this guess a miss
-    //   has it exhausted the guesses
-    //
-    // if solved or guesses exhausted are there words left
+    else { // not solved - see if out of guesses
+      if (this.guesses === 0) {
+        this.wordsLost--;
+        console.log(`Out of guesses.  The word is: ${this.currentWord.getSolvedDisplayableWord()} Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
+        this.state = 'OUT OF GUESSES';
+      }
+      else {
+        this.state = 'STILL GUESSING';
+      };
+    
+      // if SOLVED or OUT OF GUESSES then have to see if any word left and assign one 
+      // or maybe let index.js do that work
+      return;
+    }
   }
-
 }
 
 // module.exports for use in other .js files

@@ -17,7 +17,7 @@ class WordPool {
 
   // initialize by creating array of words for the wordList paramter
   init() {
-    console.log('in WordPool Class Object.init');
+    // console.log('in WordPool Class Object.init');
     // randomly pull words from the wordList array and instansiate new word object - push into words array
     // remove word from wordList - continue until all words built
     // return it to the caller

@@ -4,43 +4,14 @@
 // require for inquier
 var inquirer = require("inquirer");
 
-// letterClass - logic to manage letters
-// var letterClass = require("./letter.js");
-
-//wordPoolClass - logic to a word pool
-// var wordPoolClass = require("./wordpool.js");
-
-//wordClass - logic to manage letters
-// var wordClass = require("./word.js");
-
 //gameClass - logic to manage the game
 var gameClass = require("./game.js");
 
 // global variables and functions
 // instatiate objects 
 
-// // instansiate new Letter object(s) - for unit testing
-// var letterX = new letterClass.Letter('X');
-// var letterY = new letterClass.Letter('Y');
-// var letterZ = new letterClass.Letter('Z');
-
-// console.log(`letter X: ${letterX.getLetter()}`);
-// letterX.setLetter('Q');
-// console.log(`letter X: ${letterX.getLetter()}`);
-// letterX.setLetter('x');
-// console.log(`letter X: ${letterX.getLetter()}`);
-
-// console.log(`letter Y: ${letterZ.getLetter()}`);
-// console.log(`letter Z: ${letterX.getLetter()}`);
-
-// instansiate new word object(s) - for unit testing
-// var wordTest = new wordClass.Word('GEORGE W BUSH');
-
-// wordTest.hello();
-// console.log(`displayable word is: ${wordTest.getWord()}`);
-
 // short version of word list - used for testing
-var presidentNames = ["CAT","GOAT"];
+var presidentNames = ["CAT"];
 
 // word list for this theme
 // var presidentNames = ["GEORGE WASHINGTON","JOHN ADAMS","THOMAS JEFFERSON","JAMES MADISON","JAMES MONROE","JOHN QUINCY ADAMS","ANDREW JACKSON",
@@ -53,11 +24,111 @@ var presidentNames = ["CAT","GOAT"];
 // "JIMMY CARTER","RONALD REAGAN","GEORGE H W BUSH","BILL CLINTON","GEORGE W BUSH","BARACK OBAMA","DONALD TRUMP"];
 
 
+// main recursive function - handles inquirer prompt and calling game object functions
+const playLetter = function() {
+  if (game.hasWord)  { // the game has current word so start continue playing with it
+    inquirer.prompt([
+      {
+        name: "letterGuess",
+        message: "Enter letter \'a\' through \'z\'"
+      }
+    ]).then(function(answer){
+      // process the letter
+      console.log(`word is ${game.currentWord.word} letter count: ${letterCount} word length is: ${game.currentWord.word.length}`);
+      // console.log(`You entered: ${answer.letterGuess}`);
+      // console.log(`the actual letter is: ${game.currentWord.letters[letterCount].letter} `)
+      // console.log('figure out what the results are');
+      // for now assume keyed was A thru Z - apply it to the word.
+      // console.log(`word was: ${game.currentWord.getDisplayableWord()}`);
+      // game.currentWord.updateWord(answer.letterGuess);
+      game.processGuess(answer.letterGuess[0]);
+      console.log(`word now is: ${game.currentWord.getDisplayableWord()} game state is: ${game.state} guesses remaining: ${game.guesses}`);
+      game.currentWord.showWordLetters();
 
-// // instansiate word pool
-// var myWordPool = new wordPoolClass.WordPool(presidentNames);
-// myWordPool.showWords();
+      // here is where the heavy logic goes to determine
+      // if this word id done by solved or by guess exhausting 
+      // or is still active - for this simulator mock - just move to next letter
+     
 
+      // this mock sequence that must now be wired with actual game.state logic
+      // psuedo code:
+      // 1. guess was sent to game.ProcessGuess early above ^
+      // 2. we should now know if the guess was:
+      //    NOT A-Z        keep looping inquirer
+      //    USED LETTER    keep looping inquirer
+      //    SOLVED         get another word if one is available
+      //    OUT OF GUESSES get another word if one is available
+      //    STILL GUESSING keep looping inquirer
+      // 
+      // Next STEP is to re-wire the below to accomplish they above
+      
+      
+
+      if (letterCount === game.currentWord.word.length - 1) {
+        console.log(`word is done.  words remaining: ${game.wordPool.words.length} words remaining: ${game.wordPool.isWordRemaining()}`);
+        // this word is done - go to the next one if there is one
+        letterCount = 0;
+        game.hasWord = false;  
+        // wordCount++;
+        if (game.wordPool.isWordRemaining()) {
+          //get next word from pool
+          game.nextWord();
+          console.log(`next word is: ${game.currentWord.getDisplayableWord()}`);
+        }
+        // that was the last word - playLetter will catch it at top of function
+      }
+      else {
+        letterCount++;  
+      };
+      playLetter();  // recursive call
+
+      // REMOVE THIS ONCE PROGRAM IS WORKING AS DESIGNED:
+      // // this the mock sequence used in early development - it just cycled thru guess count === word length
+      // if (letterCount === game.currentWord.word.length - 1) {
+      //   console.log(`word is done.  words remaining: ${game.wordPool.words.length} words remaining: ${game.wordPool.isWordRemaining()}`);
+      //   // this word is done - go to the next one if there is one
+      //   letterCount = 0;
+      //   game.hasWord = false;  
+      //   // wordCount++;
+      //   if (game.wordPool.isWordRemaining()) {
+      //     //get next word from pool
+      //     game.nextWord();
+      //     console.log(`next word is: ${game.currentWord.getDisplayableWord()}`);
+      //   }
+      //   // that was the last word - playLetter will catch it at top of function
+      // }
+      // else {
+      //   letterCount++;  
+      // };
+      // playLetter();  // recursive call
+
+
+    });
+  } 
+  else { // code in the end of game messages, score below - no time to do
+    // a replay logic although it would be easy - just throw away the game object
+    // and instansiate a new one - should consider doing this, except for the
+    // asyncronise nature of the process
+    console.log('all words have been played')
+  };
+};  
+   
+// -------------------------------------------------------------
+// Main program flow
+// -------------------------------------------------------------
+
+// instansiate game object
+var game = new gameClass.Game(presidentNames);
+
+// REMOVE BELOW ONCE PROGRAM IS WORKING PER DESIGN:
+// let letterCount = 0;
+
+// this starts the letter request - response loop for the whole game
+playLetter();
+
+
+
+// REMOVE BELOW ONCE PROGRAM IS WORKING PER DESIGN:
 
 // recursive proto type experimentation  - try # 2
 // var words = ['BUSH','OBAMA','LINCOLN'];
@@ -114,73 +185,3 @@ var presidentNames = ["CAT","GOAT"];
 //       console.log('all words have been played')
 //     };
 //   };  
-
-
-
-const playLetter = function() {
-  if (game.hasWord)  { // word to play 
-    // still playing this word
-    inquirer.prompt([
-      {
-        name: "letterGuess",
-        message: "enter letter \'a\' through \'z\'"
-      }
-    ]).then(function(answer){
-      // process the letter
-      console.log(`word is ${game.currentWord.word} letter count: ${letterCount} word length is: ${game.currentWord.word.length}`);
-      console.log(`You entered: ${answer.letterGuess}`);
-      console.log(`the actual letter is: ${game.currentWord.letters[letterCount].letter} `)
-      // console.log('figure out what the results are');
-      // for now assume keyed was A thru Z - apply it to the word.
-      console.log(`word was: ${game.currentWord.getWord()}`);
-      // game.currentWord.updateWord(answer.letterGuess);
-      game.processGuess(answer.letterGuess[0]);
-      console.log(`word now is: ${game.currentWord.getWord()} game state is: ${game.state} guesses remaining: ${game.guesses}`);
-      game.currentWord.hello();
-
-      // here is where the heavy logic goes to determine
-      // if this word id done by solved or by guess exhausting 
-      // or is still active - for this simulator mock - just move to next letter
-     
-
-      if (letterCount === game.currentWord.word.length - 1) {
-        console.log(`word is done.  words remaining: ${game.wordPool.words.length} words remaining: ${game.wordPool.isWordRemaining()}`);
-        // this word is done - go to the next one if there is one
-        letterCount = 0;
-        game.hasWord = false;  
-        // wordCount++;
-        if (game.wordPool.isWordRemaining()) {
-          //get next word from pool
-          game.nextWord();
-          console.log(`next word is: ${game.currentWord.getWord()}`);
-        }
-        // that was the last word - playLetter will catch it at top of function
-      }
-      else {
-        letterCount++;  
-      };
-      playLetter();  // recursive call
-    });
-  } 
-  else {
-    console.log('all words have been played')
-  };
-};  
-   
-// -------------------------------------------------------------
-// Main program flow
-// -------------------------------------------------------------
-// currentWord = words[wordCount];
-// playLetter();
-
-console.log(`number of president names is ${presidentNames.length}`);
-
-// instansiate game object
-var game = new gameClass.Game(presidentNames);
-// get first word from pool
-game.nextWord();
-// console.log(`current word is: ${game.currentWord.word}`);
-// count to iterate thru word's letters - use only for simulation mock
-let letterCount = 0;
-// this starts the letter request - response loop for the whole game
-playLetter();
