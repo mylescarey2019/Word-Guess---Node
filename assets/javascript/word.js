@@ -26,8 +26,10 @@ class Word {
   // it has dealt with non alpha characters)
   // this A through Z letter will be applied this.word by calling setLetter on each letter
   updateWord(guessLetter) {
-  console.log('in Word Class Object.updateWord');
+  // console.log('in Word Class Object.updateWord');
+  // console.log(`the guess letter is ${guessLetter}`)
   // iterate over the this.letters and call setLetter for each letter
+  // this will set the letter to isKnown if the letter guess is correct and not already known
     for (let currentLetter of this.letters) {
       currentLetter.setLetter(guessLetter);
     }
@@ -37,8 +39,8 @@ class Word {
   // has 2 spaces between letters and 4 spaces between words and initial
   // example: 'G  E  O  R  G  E    W    B  U  S  H'
   // example: '_  _  _  _  _  _    _    _  _  _  _'  
-  getWord() {
-    // console.log('in Word Class Object.getWord');
+  getDisplayableWord() {
+    // console.log('in Word Class Object.getDisplayableWord');
     // psuedo code
     // 1.  iterate over this.word
     // 2.  if space then push 4 spaces on to string
@@ -63,6 +65,15 @@ class Word {
 
     return displayableWord;
   };
+
+   // is the word solved  
+   // ***REFACTOR - want more succint method
+   isSolved() {
+   for (const letter of this.letters) {
+      if(!letter.isKnown) return false;
+    };
+    return true;
+   }
 
 
   // dump letters array

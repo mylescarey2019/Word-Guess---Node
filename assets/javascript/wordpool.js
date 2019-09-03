@@ -35,14 +35,14 @@ class WordPool {
 
   // returns whether any words remaining
   isWordRemaining() {
-  console.log('in Word Class Object.isWordRemaining');
+  // console.log('in Word Class Object.isWordRemaining');
   // return whether words are left
     return (this.words.length > 0) ? true : false;
   }
 
   // return next word from pool and remove it
   getWordFromPool() {
-    console.log('in WordPool Class Object.getWordFromPool');
+    // console.log('in WordPool Class Object.getWordFromPool');
     return this.words.pop();
   } 
   

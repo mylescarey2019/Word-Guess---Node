@@ -17,6 +17,10 @@ The game format is
     4. letter in name and solved the word - message followed by next word
     5. repeat above until pool of presidential names exhausted.  (if time permits allow replay of the whole set of names)
 
+##Object Model
+
+![object-model](/Users/Myles/Bootcamp/WORK/Word-Guess-Node/assets/images/object-model.jpg)
+
 ## User Stories / Use Cases
 
 1.  user starts bash session
@@ -108,10 +112,10 @@ The game format is
             1. tbd
 
 
-      
+​      
 
 3. Program Flow
     1. To Be Determined (for now refer to use cases)
-       
+      
          
 #/// **** CONTINUE HERE - 8-31-2019 ****  ///

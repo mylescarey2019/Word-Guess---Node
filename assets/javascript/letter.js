@@ -2,10 +2,10 @@
 
 // class for letters of the puzzle word
 class Letter {
-  constructor(letter,isGuessed = false) {
+  constructor(letter,isKnown = (letter === ' ' ? true : false)) {
     // constructor
     this.letter = letter;
-    this.isGuessed = isGuessed;
+    this.isKnown = isKnown;
     }
 
   //methods
@@ -13,13 +13,14 @@ class Letter {
   // get letter - returns the letter in its current state of known or masked
   getLetter() {
     // console.log('in Letter Class Object.getLetter');
-    return (this.isGuessed) ? this.letter : '_';
+    return (this.isKnown) ? this.letter : '_';
   }
 
   // check and set letter's current state against parmeter and set state to known or masked
   setLetter(letter) {
     // console.log('in Letter Class Object.setLetter');
-    if(letter.toUpperCase() === this.letter) this.isGuessed = true;
+    // console.log(`this guess letter is ${letter} the letter value is ${this.letter}`)
+    if(letter.toUpperCase() === this.letter.toUpperCase()) this.isKnown = true;
   }
 
 }
