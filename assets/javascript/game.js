@@ -31,12 +31,12 @@ class Game {
   init() {
     // console.log('in Game Class Object.init');
     this.wordPool = new wordPoolClass.WordPool(this.puzzelWordList);
-    this.wordPool.showWords();
+    // this.wordPool.showWords();
     this.nextWord();
-    console.log('Welcome to Word Guess - US Presidential Edition');
+    console.log('\nWelcome to Word Guess - US Presidential Edition');
     console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
     console.log('You lose the word if you accumlate 6 missed guesses, lets begin.');
-    console.log(`The first name is: ${this.savedDisplayableWord}`);
+    console.log(`\nThe first name is [ ${this.savedDisplayableWord} ]`);
   }
   
   // set the current word to use in the puzzle
@@ -73,34 +73,56 @@ class Game {
     // update the used letter array
     this.lettersGuessed.push(letterGuess.toUpperCase());
 
-    console.log(`\'${letterGuess.toUpperCase()}\' is new letter.  Letters used: ${this.lettersGuessed.join('')}`);
+    // console.log(`\'${letterGuess.toUpperCase()}\' is new letter.  Letters used: ${this.lettersGuessed.join('')}`);
 
     // check for hit or miss : compare saved displayable word vs its new state
     // if different than letter was a hit
     var newDisplayableWord = this.currentWord.getDisplayableWord();
     if (this.savedDisplayableWord !== newDisplayableWord) {
       this.savedDisplayableWord = newDisplayableWord;
-      console.log(`\'${letterGuess.toUpperCase()}\' is a Hit.  Word is: ${newDisplayableWord}   Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`);
+      var solvedName = this.currentWord.isSolved();
+      if (solvedName) {
+        console.log(`\'${letterGuess.toUpperCase()}\' is a Hit.`);
+      }
+      else {
+        console.log(`\'${letterGuess.toUpperCase()}\' is a Hit.  Name is [ ${newDisplayableWord} ]  Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`);
+      }
     }
     else {
       this.guesses--;
-      console.log(`\'${letterGuess.toUpperCase()}\' is a Miss.  Guesses remaining: ${this.guesses}`);
+      if (this.guesses > 0) {
+        console.log(`\'${letterGuess.toUpperCase()}\' is a Miss.  Name is [ ${newDisplayableWord} ]  Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`);
+      }
+      else {
+        console.log(`\'${letterGuess.toUpperCase()}\' is a Miss.`);
+      }
     };
 
-    // now we know if it was hit or miss - next determine if it solved the word or exhausted the guesses
+    // now we know if it was hit or miss and whether it was solved - next determine if exhausted the guesses
 
     // check if puzzle is solved
-    if (this.currentWord.isSolved()) {
+    if (solvedName) {
       this.wordsWon++;
-      console.log(`You solved it. Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
-      // will have to see if there are any more words, for now just return
-      this.state = 'SOLVED';
+      if (this.wordPool.isWordRemaining()) {
+        console.log(`You solved it. Name was [ ${this.currentWord.getDisplayableWord()} ]  Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
+        this.state = 'SOLVED';
+      }
+      else {
+        console.log(`You solved it. Name was [ ${this.currentWord.getDisplayableWord()} ]`);
+        this.state = 'SOLVED';
+      }
     }
     else { // not solved - see if out of guesses
       if (this.guesses === 0) {
-        this.wordsLost--;
-        console.log(`Out of guesses.  The word is: ${this.currentWord.getSolvedDisplayableWord()} Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
-        this.state = 'OUT OF GUESSES';
+        this.wordsLost++;
+        if (this.wordPool.isWordRemaining()) {
+          console.log(`Out of guesses.  The name was [ ${this.currentWord.getSolvedDisplayableWord()} ]  Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
+          this.state = 'OUT OF GUESSES';
+        }
+        else {
+          console.log(`Out of guesses.  The name was [ ${this.currentWord.getSolvedDisplayableWord()} ]`);
+          this.state = 'OUT OF GUESSES';
+        }
       }
       else {
         this.state = 'STILL GUESSING';
