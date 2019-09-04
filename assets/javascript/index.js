@@ -11,9 +11,12 @@ var gameClass = require("./game.js");
 // instatiate objects 
 
 // short version of word list - used for testing
-var presidentNames = ["THE CAT","FISH ERIC"];
+// var presidentNames = ["THE CAT","FISH ERIC"];
 
-// word list for this theme
+// shortened word list for testing
+var presidentNames = ["GEORGE WASHINGTON","HERBERT HOOVER","HARRY S TRUMAN","BARACK OBAMA","DONALD TRUMP"];
+
+// // full word list for this theme
 // var presidentNames = ["GEORGE WASHINGTON","JOHN ADAMS","THOMAS JEFFERSON","JAMES MADISON","JAMES MONROE","JOHN QUINCY ADAMS","ANDREW JACKSON",
 // "MARTIN VAN BUREN","WILLIAM HARRISON",
 // "JOHN TYLER","JAMES POLK","ZACHARY TAYLOR","MILLARD FILLMORE","FRANKLIN PIERCE","JAMES BUCHANAN","ABRAHAM LINCOLN","ANDREW JOHNSON",
@@ -30,7 +33,7 @@ const playLetter = function() {
     inquirer.prompt([
       {
         name: "letterGuess",
-        message: "\nEnter letter \'a\' through \'z\'\n"
+        message: "\nEnter a letter \'a\' through \'z\'\n"
       }
     ]).then(function(answer){
       // process the letter
@@ -41,6 +44,7 @@ const playLetter = function() {
       // for now assume keyed was A thru Z - apply it to the word.
       // console.log(`word was: ${game.currentWord.getDisplayableWord()}`);
       // game.currentWord.updateWord(answer.letterGuess);
+
       game.processGuess(answer.letterGuess[0]);
       // console.log(`word now is: ${game.currentWord.getDisplayableWord()} game state is: ${game.state} guesses remaining: ${game.guesses}`);
       // game.currentWord.showWordLetters();

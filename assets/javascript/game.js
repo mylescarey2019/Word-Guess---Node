@@ -56,6 +56,11 @@ class Game {
   processGuess(letterGuess) {
     // console.log('in Game Class Object.processGuess');
     //Not alpha 
+    if (letterGuess === undefined) {
+      console.log(`You typed \'RETURN\' please type \'a\' through \'z\'`);
+      this.state = 'NOT A-Z';
+      return;
+    };
     if (letterGuess.match(this.regex) === null) {
       console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
       this.state = 'NOT A-Z';
