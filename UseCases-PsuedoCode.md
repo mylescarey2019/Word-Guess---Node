@@ -19,7 +19,7 @@ The game format is
 
 ##Object Model
 
-![object-model](/Users/Myles/Bootcamp/WORK/Word-Guess-Node/assets/images/object-model.jpg)
+![object-model](./assets/images/object-model.jpg)
 
 ## User Stories / Use Cases
 
@@ -75,7 +75,7 @@ The game format is
        1. word list array - gets passed to game object for use in wordpool
 2. Functions
        1. playLetter()  - recursive function played once per user input/letter
-    
+  
 2. Objects/Classes
     1. letter
         1. Properties
@@ -114,7 +114,7 @@ The game format is
             2. process Guess - core logic for evaluating the letter guess
     3. index  - main program flow
         1. function
-            
+          
             1. playLetter()  - recursive function played once per user input/letter
             
             
