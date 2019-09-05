@@ -28,17 +28,11 @@ Functionality Cases
         2. message displayed - showing puzzle state
         3. prompt for next word - show end of game if all 44 names exhausted
         4. show next word - begin again  
-
-Results: 
-
-<gif goes here​    
-
-4. Edge Cases
+2. Edge Cases
     1. non-letter entered
-        1. show message of mis-key
-        
+    2. show message of mis-key
 
-Results:
+Results:   
 
-<gif goes here>
+[see README for test results GIF ](README.md)
 

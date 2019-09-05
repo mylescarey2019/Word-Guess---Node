@@ -3,11 +3,8 @@
 // wordPoolClass - logic to manage words
 var wordPoolClass = require("./wordpool.js");
 
-// wordClass - logic to manage words
-var wordClass = require("./word.js");
-
 // class for game
-// this contains much of the game play logic 
+// this contains the core letter guess logic and word flow logic 
 class Game {
   constructor(puzzelWordList) {
     // constructor
@@ -19,7 +16,7 @@ class Game {
     this.wordsWon = 0;
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
-    this.hasWord = false; // word retrieved for use by method getWordFromPool
+    this.hasWord = false; // word has been retrieved for use by method getWordFromPool
     this.wordPool = ''
     this.regex = /[a-zA-Z]/
     this.init();
@@ -31,7 +28,7 @@ class Game {
   init() {
     // console.log('in Game Class Object.init');
     this.wordPool = new wordPoolClass.WordPool(this.puzzelWordList);
-    // this.wordPool.showWords();
+    // get the first word to play with
     this.nextWord();
     console.log('\nWelcome to Word Guess - US Presidential Edition');
     console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
@@ -43,47 +40,49 @@ class Game {
   nextWord() {
     // console.log('in Game Class Object.nextWord');
     this.hasWord = true;
+    // reset the guess count and clear the used letter array
     this.guesses = 6;
-    this.state = 'NEW WORD';
     this.lettersGuessed.splice(0,this.lettersGuessed.length);
+    // get a word from the pool
     this.currentWord = this.wordPool.getWordFromPool();
-    // to be used to determine if new letter guess unvieled any new letters
+    // to be used to determine if new letter guess unveiled any new letters
     this.savedDisplayableWord = this.currentWord.getDisplayableWord();
   }
 
   // core logic for handling letter guess and puzzle state 
-  // parameter is letter guess   &   return current game state 
+  // parameter is letter guess  
   processGuess(letterGuess) {
     // console.log('in Game Class Object.processGuess');
-    //Not alpha 
+    //letter guess is RETURN key
     if (letterGuess === undefined) {
       console.log(`You typed \'RETURN\' please type \'a\' through \'z\'`);
       this.state = 'NOT A-Z';
       return;
     };
+
+    //letter guess is not A thru Z
     if (letterGuess.match(this.regex) === null) {
       console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
       this.state = 'NOT A-Z';
       return;
     };
-    //Already used
+
+    //letter guess has is a repeat guess
     if (this.lettersGuessed.indexOf(letterGuess.toUpperCase()) !== -1) {
       console.log(`\'${letterGuess.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`);
       this.state = 'USED LETTER';
       return;
     };
 
-    // Valid A-Z to be processed - update the word object
+    //letter guess is a valid A-Z  - update the word object
     this.currentWord.updateWord(letterGuess);
     // update the used letter array
     this.lettersGuessed.push(letterGuess.toUpperCase());
 
-    // console.log(`\'${letterGuess.toUpperCase()}\' is new letter.  Letters used: ${this.lettersGuessed.join('')}`);
-
     // check for hit or miss : compare saved displayable word vs its new state
     // if different than letter was a hit
     var newDisplayableWord = this.currentWord.getDisplayableWord();
-    if (this.savedDisplayableWord !== newDisplayableWord) {
+    if (this.savedDisplayableWord !== newDisplayableWord) { // guess is a Hit
       this.savedDisplayableWord = newDisplayableWord;
       var solvedName = this.currentWord.isSolved();
       if (solvedName) {
@@ -93,7 +92,7 @@ class Game {
         console.log(`\'${letterGuess.toUpperCase()}\' is a Hit.  Name is [ ${newDisplayableWord} ]  Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`);
       }
     }
-    else {
+    else { // guess is a Miss
       this.guesses--;
       if (this.guesses > 0) {
         console.log(`\'${letterGuess.toUpperCase()}\' is a Miss.  Name is [ ${newDisplayableWord} ]  Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`);
@@ -103,7 +102,9 @@ class Game {
       }
     };
 
-    // now we know if it was hit or miss and whether it was solved - next determine if exhausted the guesses
+    // now we know if it was hit or miss and whether it was solved - next determine
+    // if the hit solved it and if that was the last word
+    // or if was miss that exhausted the guesses and that was the last word
 
     // check if puzzle is solved
     if (solvedName) {
@@ -132,10 +133,6 @@ class Game {
       else {
         this.state = 'STILL GUESSING';
       };
-    
-      // if SOLVED or OUT OF GUESSES then have to see if any word left and assign one 
-      // or maybe let index.js do that work
-      return;
     }
   }
 }

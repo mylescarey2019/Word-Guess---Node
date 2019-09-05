@@ -22,9 +22,7 @@ class Word {
     [...this.word].forEach(char => this.letters.push(new letterClass.Letter(char))); 
   }
 
-  // checks a valid A through Z letter (intend game class wrapper to call this after
-  // it has dealt with non alpha characters)
-  // this A through Z letter will be applied this.word by calling setLetter on each letter
+  // update the word's letters following a guess attempt
   updateWord(guessLetter) {
   // console.log('in Word Class Object.updateWord');
   // console.log(`the guess letter is ${guessLetter}`)
@@ -45,7 +43,7 @@ class Word {
     // 1.  iterate over this.word
     // 2.  if space then push 4 spaces on to string
     // 3.  if not space then call letters[i].getLetter()
-    // 4.  push onto output string
+    //     4.  push result onto output string
     // 5.  if not last letter then push 2 spaces on to output string
     var displayableWord = '';
     var wordLength = this.word.length;

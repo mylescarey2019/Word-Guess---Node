@@ -20,23 +20,18 @@ class WordPool {
     // console.log('in WordPool Class Object.init');
     // randomly pull words from the wordList array and instansiate new word object - push into words array
     // remove word from wordList - continue until all words built
-    // return it to the caller
     var listLength = this.puzzelWordList.length;
     for (let i = 0; i < listLength; i++) {
       var nextWord = this.puzzelWordList[Math.floor(Math.random() * this.puzzelWordList.length)];
-      // console.log(`iteration : ${i} word is : ${nextWord}`);
       this.words.push(new wordClass.Word(nextWord));
       // remove element from puzzleWordList
-      // console.log(`count of elements : ${this.puzzelWordList.length}`);
       this.puzzelWordList.splice(this.puzzelWordList.indexOf(nextWord),1);
-      // console.log(`count of elements : ${this.puzzelWordList.length}`);
     };
   }
 
-  // returns whether any words remaining
+  // returns whether any words remaining in word pool
   isWordRemaining() {
   // console.log('in Word Class Object.isWordRemaining');
-  // return whether words are left
     return (this.words.length > 0) ? true : false;
   }
 

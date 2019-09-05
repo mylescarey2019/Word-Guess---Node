@@ -72,8 +72,10 @@ The game format is
 
 1. Global
     1. Variables
-    2. Functions
-
+       1. word list array - gets passed to game object for use in wordpool
+2. Functions
+       1. playLetter()  - recursive function played once per user input/letter
+    
 2. Objects/Classes
     1. letter
         1. Properties
@@ -91,6 +93,7 @@ The game format is
             1. init - constuctor function that builds letter array
             2. updateWord - take user letter guess and calls setLetter for each letter array entry 
             3. getWord - returns terminal ready word string - has masks and spacing for readibility
+            4. solveWord - used when player exhausts guesses
     3. word pool
         1. Properties
             1. words - array of Word objects
@@ -102,20 +105,18 @@ The game format is
             4. showWords - diagnostic console log of the words
     4. game
         1. Properties
-            1. tbd
+            1. guesses
+            2. word pool
+            3. current word
+            4. words won/lost
         2. Methods
-            1. tbd
-    3. index
-        1. Properties
-            1. tbd
-        2. Methods
-            1. tbd
+            1. init - build word pool and get first word
+            2. process Guess - core logic for evaluating the letter guess
+    3. index  - main program flow
+        1. function
+            
+            1. playLetter()  - recursive function played once per user input/letter
+            
+            
 
-
-​      
-
-3. Program Flow
-    1. To Be Determined (for now refer to use cases)
-      
-         
-#/// **** CONTINUE HERE - 8-31-2019 ****  ///
+#
