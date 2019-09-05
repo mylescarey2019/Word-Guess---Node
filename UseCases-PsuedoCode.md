@@ -17,7 +17,7 @@ The game format is
     4. letter in name and solved the word - message followed by next word
     5. repeat above until pool of presidential names exhausted.  (if time permits allow replay of the whole set of names)
 
-##Object Model
+## Object Model
 
 ![object-model](./assets/images/object-model.jpg)
 
