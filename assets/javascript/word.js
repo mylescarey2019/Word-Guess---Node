@@ -34,7 +34,7 @@ class Word {
   }
 
   // return formatted string ready for use on the terminal
-  // has 2 spaces between letters and 4 spaces between words and initial
+  // has 2 spaces between letters and 4 spaces between words and any initial
   // example: 'G  E  O  R  G  E    W    B  U  S  H'
   // example: '_  _  _  _  _  _    _    _  _  _  _'  
   getDisplayableWord() {
@@ -60,12 +60,12 @@ class Word {
         }
       }  
     };
-
     return displayableWord;
   };
 
 
   // solve the word and return displayable version
+  // needed for when user has exhausted all guesses for a word
   getSolvedDisplayableWord() {
     // set all letters to known
     for (const letter of this.letters) {

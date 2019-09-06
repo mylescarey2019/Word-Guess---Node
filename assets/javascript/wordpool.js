@@ -15,16 +15,16 @@ class WordPool {
 
   //methods
 
-  // initialize by creating array of words for the wordList paramter
+  // initialize by creating array of words from the wordList parameter
   init() {
     // console.log('in WordPool Class Object.init');
-    // randomly pull words from the wordList array and instansiate new word object - push into words array
-    // remove word from wordList - continue until all words built
+    // randomly pull words from the wordList parameter and instansiate new word object for each - push into words array
+    // remove word from wordList parameter - continue until all words built
     var listLength = this.puzzelWordList.length;
     for (let i = 0; i < listLength; i++) {
       var nextWord = this.puzzelWordList[Math.floor(Math.random() * this.puzzelWordList.length)];
       this.words.push(new wordClass.Word(nextWord));
-      // remove element from puzzleWordList
+      // remove element from puzzleWordList parameter
       this.puzzelWordList.splice(this.puzzelWordList.indexOf(nextWord),1);
     };
   }

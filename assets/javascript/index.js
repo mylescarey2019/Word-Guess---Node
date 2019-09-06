@@ -53,7 +53,8 @@ const playLetter = function() {
           console.log(`\nThe next name is [ ${game.currentWord.getDisplayableWord()} ]`);
         };
       };
-      playLetter();  // recursive call
+      // recursive call 
+      playLetter();
     });
   } 
   else { // all names have been played

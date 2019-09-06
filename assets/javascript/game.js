@@ -17,8 +17,8 @@ class Game {
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
     this.hasWord = false; // word has been retrieved for use by method getWordFromPool
-    this.wordPool = ''
-    this.regex = /[a-zA-Z]/
+    this.wordPool = '' // wordPool object
+    this.regex = /[a-zA-Z]/   
     this.init();
   }
 
@@ -45,12 +45,11 @@ class Game {
     this.lettersGuessed.splice(0,this.lettersGuessed.length);
     // get a word from the pool
     this.currentWord = this.wordPool.getWordFromPool();
-    // to be used to determine if new letter guess unveiled any new letters
+    // record current diplayable word - to be used to determine if new letter guess unveiled any new letters
     this.savedDisplayableWord = this.currentWord.getDisplayableWord();
   }
 
   // core logic for handling letter guess and puzzle state 
-  // parameter is letter guess  
   processGuess(letterGuess) {
     // console.log('in Game Class Object.processGuess');
     //letter guess is RETURN key
@@ -83,9 +82,10 @@ class Game {
     // if different than letter was a hit
     var newDisplayableWord = this.currentWord.getDisplayableWord();
     if (this.savedDisplayableWord !== newDisplayableWord) { // guess is a Hit
+      // reset the saved displayble word to the new word state
       this.savedDisplayableWord = newDisplayableWord;
-      var solvedName = this.currentWord.isSolved();
-      if (solvedName) {
+      var wordIsSolved = this.currentWord.isSolved();
+      if (wordIsSolved) {
         console.log(`\'${letterGuess.toUpperCase()}\' is a Hit.`);
       }
       else {
@@ -104,16 +104,16 @@ class Game {
 
     // now we know if it was hit or miss and whether it was solved - next determine
     // if the hit solved it and if that was the last word
-    // or if was miss that exhausted the guesses and that was the last word
+    // or if miss exhausted the guesses and if that was the last word
 
     // check if puzzle is solved
-    if (solvedName) {
+    if (wordIsSolved) {
       this.wordsWon++;
       if (this.wordPool.isWordRemaining()) {
         console.log(`You solved it. Name was [ ${this.currentWord.getDisplayableWord()} ]  Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
         this.state = 'SOLVED';
       }
-      else {
+      else { // this was the final word
         console.log(`You solved it. Name was [ ${this.currentWord.getDisplayableWord()} ]`);
         this.state = 'SOLVED';
       }
@@ -125,12 +125,12 @@ class Game {
           console.log(`Out of guesses.  The name was [ ${this.currentWord.getSolvedDisplayableWord()} ]  Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`);
           this.state = 'OUT OF GUESSES';
         }
-        else {
+        else { // this was the final word
           console.log(`Out of guesses.  The name was [ ${this.currentWord.getSolvedDisplayableWord()} ]`);
           this.state = 'OUT OF GUESSES';
         }
       }
-      else {
+      else { // still have guesses remaining
         this.state = 'STILL GUESSING';
       };
     }
