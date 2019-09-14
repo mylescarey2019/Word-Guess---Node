@@ -5,10 +5,10 @@
 var inquirer = require("inquirer");
 
 //gameClass - logic to manage the game
-var gameClass = require("./game.js");
+//***refactored after code review - object desconstruction
+var { Game } = require("./game.js");
 
 // global variables and functions
-// instatiate objects 
 
 // shortened word list for testing
 // var presidentNames = ["GEORGE WASHINGTON","HARRY S TRUMAN","BARACK OBAMA"];
@@ -23,6 +23,8 @@ var presidentNames = ["GEORGE WASHINGTON","JOHN ADAMS","THOMAS JEFFERSON","JAMES
 "FRANKLIN D ROOSEVELT","HARRY S TRUMAN","DWIGHT EISENHOWER","JOHN F KENNEDY","LYNDON JOHNSON","RICHARD NIXON","GERALD FORD",
 "JIMMY CARTER","RONALD REAGAN","GEORGE H W BUSH","BILL CLINTON","GEORGE W BUSH","BARACK OBAMA","DONALD TRUMP"];
 
+// instansiate game object  
+var game = new Game(presidentNames);
 
 // main recursive function - handles inquirer prompt and calling game object functions
 const playLetter = function() {
@@ -66,9 +68,6 @@ const playLetter = function() {
 // -------------------------------------------------------------
 // Main program flow
 // -------------------------------------------------------------
-
-// instansiate game object
-var game = new gameClass.Game(presidentNames);
 
 // this starts the letter request/response loop for the whole game
 playLetter();

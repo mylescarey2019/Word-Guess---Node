@@ -1,26 +1,33 @@
 // Word Game - Node - letter Class
-
+//Object destructuring
 // letterClass - logic to manage letters
-var letterClass = require("./letter.js");
+// **refactored -object deconstruction
+// *** was:  var letterClass  = require("./letter.js");
+var { Letter } = require("./letter.js");
 
 // class for word in the puzzle
 // takes a string word and creates property array of letter objects
 class Word {
   constructor(word) {
-    // constructor
+    //** refactored 
     this.word = word;
-    this.letters = [];
-    this.init();
+    // taking word which is a string(iteratble), iterating over it calling 
+    // for new Letter Class object for each character in the string
+    // building an Array "from" that iteration function return
+    this.letters = Array.from(word, char => new Letter(char));
+    // this.init();
   }
 
   //methods
 
-  // initialize by creating array of letters for the word paramter
-  init() {
-    // console.log('in Word Class Object.init');
-    // iterate over the string and instansiate new letter object - push into letters array
-    [...this.word].forEach(char => this.letters.push(new letterClass.Letter(char))); 
-  }
+  //**refactored - no need for method - moved to constructor now
+  // initialize by creating array of letters for the word parameter
+  //  init() {
+  //   // console.log('in Word Class Object.init');
+  //   // iterate over the string and instansiate new letter object - push into letters array
+  //   [...this.word].forEach(char => this.letters.push(new letterClass.Letter(char))); 
+  // }
+
 
   // update the word's letters following a guess attempt
   updateWord(guessLetter) {
@@ -28,9 +35,12 @@ class Word {
   // console.log(`the guess letter is ${guessLetter}`)
   // iterate over the this.letters and call setLetter for each letter
   // this will set the letter to isKnown if the letter guess is correct and not already known
-    for (let currentLetter of this.letters) {
-      currentLetter.setLetter(guessLetter);
-    }
+  
+  // **refactored
+    // for (let currentLetter of this.letters) {
+    //   currentLetter.checkIfKnown(guessLetter)
+    // }
+    this.letters.map(char => char.checkIfKnown(guessLetter));
   }
 
   // return formatted string ready for use on the terminal
@@ -44,23 +54,36 @@ class Word {
     // 2.  if space then push 4 spaces on to string
     // 3.  if not space then call letters[i].getLetter()
     //     4.  push result onto output string
-    // 5.  if not last letter then push 2 spaces on to output string
-    var displayableWord = '';
-    var wordLength = this.word.length;
+    // 5.  if not last letter then push 2 spaces on to output 
+    
+    // **refactored 
+    // **note that letter is now referenced as a property 
+    // instead of getLetter()  this is because it was converted
+    // to a getter in the Letter Class
+    // note the object desconstruction instead of use word property
+    // the letter object from the letter array is deconstructed
+    // to access its letter property :  {letter}
+    return this.letters.map(({letter}, i) => {
+      if (letter === ' ') return letter + '    ';
+      else return i < this.letters.length - 1 ? letter + '  ' : letter;
+    }).join('');
 
-    for (var i = 0 ; i < wordLength; i++) {
-      if (this.word[i] === ' ') {
-        displayableWord += '    ';
-      }
-      else {
-        displayableWord += this.letters[i].getLetter();
-        // if not the last letter in word then add necessary whitespace
-        if (i < wordLength - 1) {
-          displayableWord += '  ';
-        }
-      }  
-    };
-    return displayableWord;
+    // var displayableWord = '';
+    // var wordLength = this.word.length;
+
+    // for (var i = 0 ; i < wordLength; i++) {
+    //   if (this.word[i] === ' ') {
+    //     displayableWord += '    ';
+    //   }
+    //   else {
+    //     displayableWord += this.letters[i].getLetter();
+    //     // if not the last letter in word then add necessary whitespace
+    //     if (i < wordLength - 1) {
+    //       displayableWord += '  ';
+    //     }
+    //   }  
+    // };
+    // return displayableWord;
   };
 
 
@@ -68,20 +91,24 @@ class Word {
   // needed for when user has exhausted all guesses for a word
   getSolvedDisplayableWord() {
     // set all letters to known
-    for (const letter of this.letters) {
-      letter.isKnown = true;
-    };
+    // ***refactored 
+    this.letters.map(letter => letter.isKnown = true);
+    // for (const letter of this.letters) {
+    //   letter.isKnown = true;
+    // };
     return this.getDisplayableWord();
   }
 
 
   // is the word solved  
-  // ***REFACTOR - want more succint method if possible
   isSolved() {
-  for (const letter of this.letters) {
-      if(!letter.isKnown) return false;
-    };
-    return true;
+  // ***refactored 
+  return this.letters.every(letter => letter.isKnown);
+  // return this.letters.every(letter => letter.isKnown ? true : false);
+  // for (const letter of this.letters) {
+  //     if(!letter.isKnown) return false;
+  //   };
+  //   return true;
   }
 
 

@@ -4,22 +4,25 @@
 class Letter {
   constructor(letter,isKnown = (letter === ' ' ? true : false)) {
     // constructor
-    this.letter = letter;
+    this._letter = letter;
     this.isKnown = isKnown;
     }
 
   //methods
 
   // get letter - returns the letter in its current state of known or masked
-  getLetter() {
+  //** refactored during code review to use getter
+  // method letter now acts a property - i.e. it can be invoked as myLetter.letter 
+  // instead of myLetter.letter()
+  get letter() {
     // console.log('in Letter Class Object.getLetter');
-    return (this.isKnown) ? this.letter : '_';
+    return (this.isKnown) ? this._letter : '_';
   }
 
   // check and set letter's current state against parmeter and set state to known or masked
-  setLetter(letter) {
+  checkIfKnown(letter) {
     // console.log('in Letter Class Object.setLetter');
-    if(letter.toUpperCase() === this.letter.toUpperCase()) this.isKnown = true;
+    if(letter.toUpperCase() === this._letter.toUpperCase()) this.isKnown = true;
   }
 }
 
