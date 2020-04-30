@@ -3,7 +3,7 @@
 // letterClass - logic to manage letters
 // **refactored -object deconstruction
 // *** was:  var letterClass  = require("./letter.js");
-var { Letter } = require("./letter.js");
+const { Letter } = require("./letter.js");
 
 // class for word in the puzzle
 // takes a string word and creates property array of letter objects
@@ -15,6 +15,7 @@ class Word {
     // for new Letter Class object for each character in the string
     // building an Array "from" that iteration function return
     this.letters = Array.from(word, char => new Letter(char));
+    console.log(`${this.word} : ${this.getDisplayableWord()}`);
     // this.init();
   }
 
@@ -30,9 +31,9 @@ class Word {
 
 
   // update the word's letters following a guess attempt
-  updateWord(guessLetter) {
-  // console.log('in Word Class Object.updateWord');
-  // console.log(`the guess letter is ${guessLetter}`)
+  updateWord(guessedLetter) {
+  console.log('in Word Class Object.updateWord');
+  console.log(`the guess letter is ${guessedLetter}`)
   // iterate over the this.letters and call setLetter for each letter
   // this will set the letter to isKnown if the letter guess is correct and not already known
   
@@ -40,7 +41,9 @@ class Word {
     // for (let currentLetter of this.letters) {
     //   currentLetter.checkIfKnown(guessLetter)
     // }
-    this.letters.map(char => char.checkIfKnown(guessLetter));
+    //this.letters.map(char => char.checkIfKnown(guessLetter));
+    //using setter... not sure if this is more clear code ?
+    this.letters.map(char => char.isKnown = guessedLetter);
   }
 
   // return formatted string ready for use on the terminal
@@ -92,10 +95,12 @@ class Word {
   getSolvedDisplayableWord() {
     // set all letters to known
     // ***refactored 
-    this.letters.map(letter => letter.isKnown = true);
+    //this.letters.map(letter => letter.isKnown = true);
+    this.letters.map(letter => letter.forceReveal());
     // for (const letter of this.letters) {
     //   letter.isKnown = true;
     // };
+    //this.showWordLetters();
     return this.getDisplayableWord();
   }
 
@@ -103,6 +108,7 @@ class Word {
   // is the word solved  
   isSolved() {
   // ***refactored 
+  // using getter
   return this.letters.every(letter => letter.isKnown);
   // return this.letters.every(letter => letter.isKnown ? true : false);
   // for (const letter of this.letters) {
