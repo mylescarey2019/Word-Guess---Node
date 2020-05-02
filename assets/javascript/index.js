@@ -11,8 +11,8 @@ const { Game } = require("./game.js");
 // global variables and functions
 
 // shortened word list for testing
-//const presidentNames = ["GEORGE WASHINGTON","HARRY S TRUMAN","BARACK OBAMA"];
-const presidentNames = ["BARACK OBAMA"];
+const presidentNames = ["JAMES POLK","JOHN ADAMS"];
+//const presidentNames = ["BARACK OBAMA"];
 
 // full word list for this theme
 // var presidentNames = ["GEORGE WASHINGTON","JOHN ADAMS","THOMAS JEFFERSON","JAMES MADISON","JAMES MONROE","JOHN QUINCY ADAMS","ANDREW JACKSON",

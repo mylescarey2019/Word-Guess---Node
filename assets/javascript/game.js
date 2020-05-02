@@ -1,15 +1,12 @@
-// Word Game - Node - game Class
-
-// wordPoolClass - logic to manage words
-//*** refactored 
+// import WordPool class - WordPool class consists of array of Word objects
 var { WordPool } = require("./wordpool.js");
 
 // class for game
-// this contains the core letter guess logic and word flow logic 
+// this contains the core letter guessing logic
 class Game {
   constructor(puzzelWordList) {
-    // constructor
-    this.puzzelWordList = puzzelWordList;
+    //this.puzzelWordList = puzzelWordList;
+    this.wordPool = new WordPool(puzzelWordList);   // instansiate wordPool object
     this.guesses = 6;
     this.state = '';
     this.currentWord = ''
@@ -17,37 +14,15 @@ class Game {
     this.wordsWon = 0;
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
-    this.hasWord = false; // word has been retrieved for use by method getWordFromPool
-
-    //***refactored - moved here from Init()
-    this.wordPool = new WordPool(this.puzzelWordList);          // wordPool object
-
-    this.regex = /[a-zA-Z]/;
-    //***refactored - eliminated init() by moving these to constructor :
-    // this.wordPool.showWords();  // diagnotic only - remove after testing
+    this.hasWord = false; // a word has been retrieved by method getWordFromPool and is ready for use 
+    this.regex = /[a-zA-Z]/;  // used to validate letter guesses
+    this.wordPool.showWords();  // diagnotic only - remove after testing
     this.nextWord();  // get the first word to play with
     console.log('\nWelcome to Word Guess - US Presidential Edition');
     console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
     console.log('You lose the word if you accumlate 6 missed guesses, lets begin.');
     console.log(`\nThe first name is [ ${this.savedDisplayableWord} ]`);
-
-    // this.init();
   }
-
-  //methods
-
-  // initialize by creating word pool object and getting first word
-  // init() {
-  //   // console.log('in Game Class Object.init');
-  //   // this.wordPool = new wordPoolClass.WordPool(this.puzzelWordList); - moved to constuctor
-  //   this.wordPool.showWords();
-  //   // get the first word to play with
-  //   this.nextWord();
-  //   console.log('\nWelcome to Word Guess - US Presidential Edition');
-  //   console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
-  //   console.log('You lose the word if you accumlate 6 missed guesses, lets begin.');
-  //   console.log(`\nThe first name is [ ${this.savedDisplayableWord} ]`);
-  // }
   
   // set the current word to use in the puzzle
   nextWord() {

@@ -1,4 +1,4 @@
-// import Letter class - Word class consists of array of Letter objects
+// import Letter class - Letter class contains a letter from a puzzle name
 const { Letter } = require("./letter.js");
 
 // class for a president name in the puzzle
@@ -34,7 +34,7 @@ class Word {
     // 3.  if not last non-space letter add it and 2 spaces to the return
     // 4.  if last non-space letter add it to the return
     // 5.  join map's array to return a string
-    return this.letters.map(({letter}, i) => {
+    return this.letters.map(({ letter }, i) => {
       if (letter === ' ') {
         return letter + '    ';
       }

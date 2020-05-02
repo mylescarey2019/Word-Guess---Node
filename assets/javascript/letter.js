@@ -1,10 +1,10 @@
 // class for letter in the puzzle's word
 // letter starts unknown to player unless it is a space between names or intials
 class Letter {
-  constructor(letter,isKnown = (letter === ' ' ? true : false)) {
+  constructor(letter, isKnown = (letter === ' ' ? true : false)) {
     this._letter = letter;
     this._isKnown = isKnown;
-    }
+  }
 
   // if letter is not known display it as an underscore  
   get letter() {
