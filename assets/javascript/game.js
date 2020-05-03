@@ -1,74 +1,91 @@
 // import WordPool class - WordPool class consists of array of Word objects
-var { WordPool } = require("./wordpool.js");
+const { WordPool } = require("./wordpool.js");
 
 // class for game
-// this contains the core letter guessing logic
+// this contains the core letter guessing logic, tracks game score, and draws down the word pool
 class Game {
   constructor(puzzelWordList) {
     //this.puzzelWordList = puzzelWordList;
     this.wordPool = new WordPool(puzzelWordList);   // instansiate wordPool object
     this.guesses = 6;
     this.state = '';
-    this.currentWord = ''
-    this.savedDisplayableWord = '';
+    this.currentWord = '' // word object
+    this.savedDisplayableWord = ''; // used during guess comparison; set by nextWord method
     this.wordsWon = 0;
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
     this.hasWord = false; // a word has been retrieved by method getWordFromPool and is ready for use 
-    this.regex = /[a-zA-Z]/;  // used to validate letter guesses
+    // this.regex = /[a-zA-Z]/;  // used to validate letter guesses
     this.wordPool.showWords();  // diagnotic only - remove after testing
-    this.nextWord();  // get the first word to play with
+    this.nextWord();  // get the first word to play with, reset guesses and letters used
     console.log('\nWelcome to Word Guess - US Presidential Edition');
     console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
     console.log('You lose the word if you accumlate 6 missed guesses, lets begin.');
     console.log(`\nThe first name is [ ${this.savedDisplayableWord} ]`);
   }
-  
-  // set the current word to use in the puzzle
+
+  // reset guess count, clear used letter array, get next word object from pool
   nextWord() {
-    // console.log('in Game Class Object.nextWord');
-    this.hasWord = true;
-    // reset the guess count and clear the used letter array
     this.guesses = 6;
-    this.lettersGuessed.splice(0,this.lettersGuessed.length);
-    // get a word from the pool
+    this.lettersGuessed.splice(0, this.lettersGuessed.length);
     this.currentWord = this.wordPool.getWordFromPool();
+    this.hasWord = true;
     // record current diplayable word - to be used to determine if new letter guess unveiled any new letters
     this.savedDisplayableWord = this.currentWord.getDisplayableWord();
   }
 
+
+
+
   // core logic for handling letter guess and puzzle state 
   processGuess(letterGuess) {
-    // console.log('in Game Class Object.processGuess');
-    //letter guess is RETURN key
-    if (letterGuess === undefined) {
-      console.log(`You typed \'RETURN\' please type \'a\' through \'z\'`);
-      this.state = 'NOT A-Z';
-      return;
-    };
 
-    //letter guess is not A thru Z
-    if (letterGuess.match(this.regex) === null) {
-      console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
-      this.state = 'NOT A-Z';
-      return;
-    };
+    const validateGuess = (letter) => {
+      let valid = 'true';
+      let message = '';
+      let regex = /[a-zA-Z]/;   
 
-    //letter guess has is a repeat guess
-    if (this.lettersGuessed.indexOf(letterGuess.toUpperCase()) !== -1) {
-      console.log(`\'${letterGuess.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`);
-      this.state = 'USED LETTER';
-      return;
-    };
+      if (letter === undefined) {
+        valid = false;
+        message = `You typed \'RETURN\' please type \'a\' through \'z\'`;
+      } else if (letter.match(regex) === null) {
+        valid = false;
+        message = `You typed \'${letterGuess}\' please type \'a\' through \'z\'`;
+      } else if (this.lettersGuessed.includes(letter.toUpperCase())) {
+        valid = false;
+        message = `\'${letter.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`;
+      };
+      return [valid,message];
+    }
 
-    //letter guess is a valid A-Z  - update the word object
+    const [validGuess, guessMessage] = validateGuess(letterGuess);
+    if (!validGuess) {
+      return console.log(guessMessage);
+    }
+
+    // //guess is RETURN key
+    // if (letterGuess === undefined) {
+    //   return console.log(`You typed \'RETURN\' please type \'a\' through \'z\'`);
+    // };
+
+    // //guess is not A thru Z
+    // if (letterGuess.match(this.regex) === null) {
+    //   return console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
+    // };
+
+    // //letter has already been quessed 
+    // if (this.lettersGuessed.includes(letterGuess.toUpperCase())) {
+    //   return console.log(`\'${letterGuess.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`);
+    // };
+
+
+
+    //guess is a valid A-Z  - update the word object
     this.currentWord.updateWord(letterGuess);
     // update the used letter array
     this.lettersGuessed.push(letterGuess.toUpperCase());
 
 
-
-    
     // check for hit or miss : compare saved displayable word vs its new state
     // if different than letter was a hit
     var newDisplayableWord = this.currentWord.getDisplayableWord();

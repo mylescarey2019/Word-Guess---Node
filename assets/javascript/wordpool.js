@@ -22,12 +22,12 @@ class WordPool {
     };
   }
 
-  // returns whether any words are left in the word pool
+  // returns whether any words objects remain in the word pool
   isWordRemaining() {
     return (this.words.length > 0) ? true : false;
   }
 
-  // remove and return next word from pool
+  // remove and return next word object from pool
   getWordFromPool() {
     return this.words.pop();
   } 
