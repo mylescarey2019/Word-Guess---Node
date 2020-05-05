@@ -19,7 +19,7 @@ class WordPool {
       this.words.push(new Word(nextName));
       // remove name from puzzle list parameter 
       this.puzzelWordList.splice(this.puzzelWordList.indexOf(nextName),1);
-    };
+    }
   }
 
   // returns whether any words objects remain in the word pool

@@ -15,7 +15,6 @@ class Game {
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
     this.hasWord = false; // a word has been retrieved by method getWordFromPool and is ready for use 
-    // this.regex = /[a-zA-Z]/;  // used to validate letter guesses
     this.wordPool.showWords();  // diagnotic only - remove after testing
     this.nextWord();  // get the first word to play with, reset guesses and letters used
     console.log('\nWelcome to Word Guess - US Presidential Edition');
@@ -51,7 +50,7 @@ class Game {
       } else if (this.lettersGuessed.includes(letter.toUpperCase())) {
         valid = false;
         errorMsg = `\'${letter.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`;
-      };
+      }
       return [valid, errorMsg];
     }
     
@@ -65,7 +64,7 @@ class Game {
       return console.log(guessErrorMsg);
     }
     
-    // display guess result on console, hit or miss
+    // display first part of guess result on console: hit or miss
     const consoleGuessResult = (isHit, roundOver) => {
       let message = `\'${letterGuess.toUpperCase()}\'`;
       message += (isHit) ? ' is a Hit.' : ' is a Miss.';
@@ -87,6 +86,58 @@ class Game {
       this.guesses--;
       consoleGuessResult(isHit, this.guesses === 0);
     }
+
+    // display 2nd part of guess result on console: word solved or out of guesses
+    const consoleWordEndResult = (isSolved, gameOver) => {
+      let message = '';
+      message += (isSolved) ? 'You solved it. Name was [ ' : 'Out of guesses.  The name was [ ';
+      message += this.currentWord.getSolvedDisplayableWord();
+      message += (gameOver) ? ` ]` : ` ]  Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`;
+      console.log(message);
+    }
+
+    const gameOver = !this.wordPool.isWordRemaining();
+    if (wordIsSolved) {
+      this.wordsWon++;
+      this.state = 'NEXT WORD';
+      consoleWordEndResult(wordIsSolved,gameOver);
+    }
+    else { // not solved - see if out of guesses
+      if (this.guesses === 0) {
+        this.wordsLost++;
+        this.state = 'NEXT WORD';
+        consoleWordEndResult(wordIsSolved,gameOver);
+      }
+      else { // still have guesses remaining
+        this.state = 'KEEP GUESSING';
+      }
+    }
+  }
+}
+
+// module.exports for use in other .js files
+module.exports = {
+  Game: Game
+};
+
+
+
+    // //guess is RETURN key
+    // if (letterGuess === undefined) {
+    //   return console.log(`You typed \'RETURN\' please type \'a\' through \'z\'`);
+    // };
+
+    // //guess is not A thru Z
+    // if (letterGuess.match(this.regex) === null) {
+    //   return console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
+    // };
+
+    // //letter has already been quessed 
+    // if (this.lettersGuessed.includes(letterGuess.toUpperCase())) {
+    //   return console.log(`\'${letterGuess.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`);
+    // };
+
+
 
 
     // // check for hit or miss : compare saved displayable word vs its new state
@@ -117,44 +168,6 @@ class Game {
     // if the hit solved it and if that was the last word
     // or if miss exhausted the guesses and if that was the last word
 
-
-    // display guess result on console, solved or out of guesses
-    const consoleWordEndResult = (isSolved, gameOver) => {
-      let message = '';
-      message += (isSolved) ? 'You solved it. Name was [ ' : 'Out of guesses.  The name was [ ';
-      message += this.currentWord.getSolvedDisplayableWord();
-      message += (gameOver) ? ` ]` : ` ]  Your score is, Wins: ${this.wordsWon} Losses: ${this.wordsLost}`;
-      console.log(message);
-    }
-
-    const gameOver = !this.wordPool.isWordRemaining();
-    if (wordIsSolved) {
-      this.wordsWon++;
-      this.state = 'SOLVED';
-      consoleWordEndResult(wordIsSolved,gameOver);
-      // if (this.wordPool.isWordRemaining()) {
-      //   consoleWordEndResult(true, false);
-      // }
-      // else { // this was the final word
-      //   consoleWordEndResult(true, true);
-      // }
-    }
-    else { // not solved - see if out of guesses
-      if (this.guesses === 0) {
-        this.wordsLost++;
-        this.state = 'OUT OF GUESSES';
-        consoleWordEndResult(wordIsSolved,gameOver);
-        // if (this.wordPool.isWordRemaining()) {
-        //   consoleWordEndResult(false, false);
-        // }
-        // else { // this was the final word
-        //   consoleWordEndResult(false, true);
-        // }
-      }
-      else { // still have guesses remaining
-        this.state = 'STILL GUESSING';
-      };
-    }
     // // check if puzzle is solved
     // if (wordIsSolved) {
     //   this.wordsWon++;
@@ -183,29 +196,3 @@ class Game {
     //     this.state = 'STILL GUESSING';
     //   };
     // }
-
-
-  }
-}
-
-// module.exports for use in other .js files
-module.exports = {
-  Game: Game
-};
-
-
-
-    // //guess is RETURN key
-    // if (letterGuess === undefined) {
-    //   return console.log(`You typed \'RETURN\' please type \'a\' through \'z\'`);
-    // };
-
-    // //guess is not A thru Z
-    // if (letterGuess.match(this.regex) === null) {
-    //   return console.log(`You typed \'${letterGuess}\' please type \'a\' through \'z\'`);
-    // };
-
-    // //letter has already been quessed 
-    // if (this.lettersGuessed.includes(letterGuess.toUpperCase())) {
-    //   return console.log(`\'${letterGuess.toUpperCase()}\' has already been used.  Letters used: ${this.lettersGuessed.join('')}`);
-    // };
