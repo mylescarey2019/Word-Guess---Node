@@ -14,7 +14,6 @@ class Word {
 
     // alternate version using rest operator
     // [...this.word].forEach(char => this.letters.push(new Letter(char)));
-    //console.log(`${this.word} : ${this.getDisplayableWord()}`);
   }
 
   // update the word's letters following a guess attempt

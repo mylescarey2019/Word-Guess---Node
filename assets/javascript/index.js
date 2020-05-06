@@ -1,18 +1,28 @@
-// Word Guess - Node hangman game - main program
+// Word Guess - Hangman style word guess game using theme
+// of the US Presidents 
+// Classes:
+//    Letter    - one character of puzzle name and whether it is known or not
+//    Word      - array of Letter objects for the puzzle name
+//    WordPool  - array of Word objects with all the puzzle names
+//    Game      - resolves letter guesses and console.logs play information
+//
+// Main - has command-line recursive loop to cycle through player guesses
+//        and all puzzle words - i.e. US President names
+//        Executes Game object methods 
 
 
 // require for inquier
 const inquirer = require("inquirer");
 
 //gameClass - logic to manage the game
-//***refactored after code review - object desconstruction
 const { Game } = require("./game.js");
 
 // global variables and functions
 
-// shortened word list for testing
-const presidentNames = ["ABC","KITTY"];
-//const presidentNames = ["JAMES POLK","JOHN ADAMS"];
+// shortened word lists for testing
+//const presidentNames = ["AB","XYZ"];
+//const presidentNames = ["ABC","KITTY"];
+const presidentNames = ["JAMES POLK","JOHN ADAMS"];
 //const presidentNames = ["BARACK OBAMA"];
 
 // full word list for this theme
@@ -28,29 +38,29 @@ const presidentNames = ["ABC","KITTY"];
 // instansiate game object  
 const game = new Game(presidentNames);
 
-// main recursive function - handles inquirer prompt and calling game object functions
-const playLetter = function() {
+// main recursive function - handles inquirer prompt and calling game object methods
+const playLetter = () => {
+  // check whether game has word to play with; if not then game over, return from recursion
   if (game.hasWord)  { // the game has a word to play with - start/continue 
     inquirer.prompt([
       {
         name: "letterGuess",
         message: "\nEnter a letter \'a\' through \'z\'\n"
       }
-    ]).then(function(answer){ // convert to fat arrow function
-      // process the letter - igorning any keyed character after the first one
+ //   ]).then(function(answer){ // convert to fat arrow function
+    ]).then((answer) => {
+      // process the letter guess - igorning any keyed character after the first one
       game.processGuess(answer.letterGuess[0]);
-
+          //console.log(`Guess was: ${answer.letterGuess[0]} has word = ${game.hasWord} game state = ${game.state}`);
       // game.state is one of the following:
-      //    KEEP GUESSING - keep looping inquirer
-      //    NEXT WORD -     get another word if one is available
+      //    KEEP GUESSING - keep looping by recursion
+      //    NEXT WORD     - get next word if one is available
 
-      // If Solved or Out of Guesses - get a new word then recursive call playLetter() which will 
-      // prompt user for next letter guess
+      // If word Solved or Out of Guesses - try to get a new word 
       if (game.state === 'NEXT WORD') {
-        game.hasWord = false;  // don't know if game will have word to play with yet
+        game.hasWord = false;  // don't know if game has any words left yet
         if (game.wordPool.isWordRemaining()) {
-          //get next word from pool
-          game.nextWord();  // game.hasWord will be set to true by game.nextWord();
+          game.nextWord();  // game.nextWord() will get the word and also toggle game.hasWord to true
           console.log(`\nThe next name is [ ${game.currentWord.getDisplayableWord()} ]`);
         }
       }
