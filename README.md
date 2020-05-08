@@ -64,6 +64,7 @@ mylescarey2019@gmail.com
 ## Version History
 
 * 1.0 - Initial Release
+* 1.1 - Refactored code to increase use of ES6 features/syntax, make existing classes DRYier and cleanup dead/commented out code
 
 ## License
 

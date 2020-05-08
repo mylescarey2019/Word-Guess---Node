@@ -15,7 +15,7 @@ class Game {
     this.wordsLost = 0;
     this.lettersGuessed = []; // array of alphas that have already been guessed
     this.hasWord = false; // a word has been retrieved by method getWordFromPool and is ready for use 
-    this.wordPool.showWords();  // diagnotic only - remove after testing
+    //this.wordPool.showWords();  // diagnotic only - comment out after testing
     this.nextWord();  // get the first word to play with, reset guesses and letters used
     console.log('\nWelcome to Word Guess - US Presidential Edition');
     console.log('Solve each of the 44 president name puzzles, use keyboard A through Z');
@@ -69,7 +69,10 @@ class Game {
     const consoleGuessResult = (isHit, roundOver) => {
       let message = `\'${letterGuess.toUpperCase()}\'`;
       message += (isHit) ? ' is a Hit.' : ' is a Miss.';
-      message += (roundOver) ? '' : `  Name is [ ${newDisplayableWord} ]  Guesses remaining: ${this.guesses}   Letters used: ${this.lettersGuessed.join('')}`;
+      message += (roundOver) 
+                  ? '' 
+                  : `  Name is [ ${newDisplayableWord} ]  Guesses remaining: ${this.guesses}` 
+                  + `   Letters used: ${this.lettersGuessed.join('')}`;
       console.log(message);
     }
     

@@ -19,7 +19,7 @@ class Word {
   // update the word's letters following a guess attempt
   updateWord(guessedLetter) {
     // iterate over this.letters array and call isKnown setter for each letter
-    // this will set isKnown to true if the letter == guessedLetter
+    // this will set isKnown to true if the letter === guessedLetter
     this.letters.map(char => char.isKnown = guessedLetter);
   }
 
