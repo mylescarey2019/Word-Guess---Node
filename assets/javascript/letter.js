@@ -1,28 +1,28 @@
-// Word Game - Node - letter Class
-
-// class for letters of the puzzle word
+// class for letter in the puzzle's word
+// letter starts unknown to player unless it is a space between names or intials
 class Letter {
-  constructor(letter,isKnown = (letter === ' ' ? true : false)) {
-    // constructor
+  constructor(letter, isKnown = (letter === ' ' ? true : false)) {
     this._letter = letter;
-    this.isKnown = isKnown;
-    }
-
-  //methods
-
-  // get letter - returns the letter in its current state of known or masked
-  //** refactored during code review to use getter
-  // method letter now acts a property - i.e. it can be invoked as myLetter.letter 
-  // instead of myLetter.letter()
-  get letter() {
-    // console.log('in Letter Class Object.getLetter');
-    return (this.isKnown) ? this._letter : '_';
+    this._isKnown = isKnown;
   }
 
-  // check and set letter's current state against parmeter and set state to known or masked
-  checkIfKnown(letter) {
-    // console.log('in Letter Class Object.setLetter');
-    if(letter.toUpperCase() === this._letter.toUpperCase()) this.isKnown = true;
+  // if letter is not known display it as an underscore  
+  get letter() {
+    return (this._isKnown) ? this._letter : '_';
+  }
+
+  // if letter is guessed set isKnown to true else keep current state
+  set isKnown(guessedLetter) {
+    this._isKnown = (guessedLetter.toUpperCase() === this._letter.toUpperCase()) ? true : this._isKnown;
+  }
+
+  get isKnown() {
+    return this._isKnown;
+  }
+
+  // force the letter to known state without guessing
+  forceReveal() {
+    this._isKnown = true;
   }
 }
 
