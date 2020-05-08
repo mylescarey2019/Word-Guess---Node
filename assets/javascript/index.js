@@ -51,7 +51,6 @@ const playLetter = () => {
     ]).then((answer) => {
       // process the letter guess - igorning any keyed character after the first one
       game.processGuess(answer.letterGuess[0]);
-          //console.log(`Guess was: ${answer.letterGuess[0]} has word = ${game.hasWord} game state = ${game.state}`);
       // game.state is one of the following:
       //    KEEP GUESSING - keep looping by recursion
       //    NEXT WORD     - get next word if one is available
